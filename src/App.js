@@ -95,7 +95,7 @@ function App() {
   const handleSubmit = async () => {
     try {
       // Send an API request with the inputText
-      const response = await fetch("/your-api-endpoint", {
+      const response = await fetch("http://127.0.0.1:5000/check-text", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -106,6 +106,7 @@ function App() {
       if (response.ok) {
         const data = await response.json();
         // Check if the API response indicates the text is mean (true)
+        
         setIsMean(data.ans === "true");
       } else {
         // Handle API error here
@@ -132,7 +133,7 @@ function App() {
         // Make API calls for each word
         for (const word of words) {
           try {
-            const response = await fetch("/your-api-endpoint", {
+            const response = await fetch("http://127.0.0.1:5000/check-text", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
