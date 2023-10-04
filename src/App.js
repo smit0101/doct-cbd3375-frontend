@@ -75,21 +75,13 @@ const styles = {
     color: "green",
     fontSize: "16px",
   },
-  fileText: {
-    fontWeight: "bold",
-    fontSize: "16px",
-  },
-  wordList: {
-    listStyle: "none",
-    padding: 0,
-  },
 };
 
 function App() {
   const [inputText, setInputText] = useState(""); // State to store input text
   const [isMean, setIsMean] = useState(null); // State to store whether the text is mean or not
   const [fileData, setFileData] = useState(""); // State to store file data
-  const [wordResponses, setWordResponses] = useState([]); // State to store responses for each word
+  const [sentenceResults, setSentenceResults] = useState([]); // State to store results for each sentence
 
   // Function to handle text submission
   const handleSubmit = async () => {
@@ -105,8 +97,8 @@ function App() {
 
       if (response.ok) {
         const data = await response.json();
+        console.log(data);
         // Check if the API response indicates the text is mean (true)
-        
         setIsMean(data.ans === "true");
       } else {
         // Handle API error here
@@ -126,35 +118,39 @@ function App() {
         const content = event.target.result;
         setFileData(content);
 
-        // Split the file content into words
-        const words = content.split(/\s+/);
-        const responses = [];
+        // Split the content into sentences separated by periods (.)
+        const sentences = content.split(".");
 
-        // Make API calls for each word
-        for (const word of words) {
-          try {
-            const response = await fetch("http://127.0.0.1:5000/check-text", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ text: word }),
-            });
+        // Loop through the sentences and make API calls for each
+        const results = [];
+        for (const sentence of sentences) {
+          const trimmedSentence = sentence.trim(); // Remove leading/trailing spaces
+          if (trimmedSentence) {
+            try {
+              const response = await fetch("http://127.0.0.1:5000/check-text", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ text: trimmedSentence }),
+              });
 
-            if (response.ok) {
-              const data = await response.json();
-              responses.push({ word, isMean: data.ans === "true" });
-            } else {
-              // Handle API error here
-              console.error("API request failed");
+              if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+                results.push({ sentence: trimmedSentence, isMean: data.ans === "true" });
+              } else {
+                // Handle API error here
+                console.error("API request failed");
+              }
+            } catch (error) {
+              console.error("An error occurred:", error);
             }
-          } catch (error) {
-            console.error("An error occurred:", error);
           }
         }
 
-        // Set the responses for each word
-        setWordResponses(responses);
+        // Set the results for each sentence
+        setSentenceResults(results);
       };
       fileReader.readAsText(file);
     }
@@ -194,16 +190,16 @@ function App() {
             onChange={handleFileUpload}
           />
         </div>
-        {wordResponses.length > 0 && (
+        {sentenceResults.length > 0 && (
           <div>
-            <p style={styles.fileText}>Word Responses:</p>
+            <p style={styles.fileText}>Sentence Results:</p>
             <ul style={styles.wordList}>
-              {wordResponses.map((response, index) => (
+              {sentenceResults.map((result, index) => (
                 <li
                   key={index}
-                  style={response.isMean ? styles.meanText : styles.notMeanText}
+                  style={result.isMean ? styles.meanText : styles.notMeanText}
                 >
-                  {response.word} - {response.isMean ? "Bad" : "Good"}
+                  {result.sentence} - {result.isMean ? "Mean" : "Not Mean"}
                 </li>
               ))}
             </ul>
