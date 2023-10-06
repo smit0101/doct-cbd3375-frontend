@@ -87,7 +87,7 @@ function App() {
   const handleSubmit = async () => {
     try {
       // Send an API request with the inputText
-      const response = await fetch("http://127.0.0.1:5000/check-text", {
+      const response = await fetch("https://a8k7ok1hmc.execute-api.ca-central-1.amazonaws.com/cyberbullyingpredict", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -99,7 +99,7 @@ function App() {
         const data = await response.json();
         console.log(data);
         // Check if the API response indicates the text is mean (true)
-        setIsMean(data.ans === "true");
+        setIsMean(data.result  === "true");
       } else {
         // Handle API error here
         console.error("API request failed");
@@ -127,7 +127,7 @@ function App() {
           const trimmedSentence = sentence.trim(); // Remove leading/trailing spaces
           if (trimmedSentence) {
             try {
-              const response = await fetch("http://127.0.0.1:5000/check-text", {
+              const response = await fetch("https://a8k7ok1hmc.execute-api.ca-central-1.amazonaws.com/cyberbullyingpredict", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -138,7 +138,7 @@ function App() {
               if (response.ok) {
                 const data = await response.json();
                 console.log(data);
-                results.push({ sentence: trimmedSentence, isMean: data.ans === "true" });
+                results.push({ sentence: trimmedSentence, isMean: data.result === "true" });
               } else {
                 // Handle API error here
                 console.error("API request failed");
