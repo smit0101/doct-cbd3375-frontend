@@ -82,12 +82,13 @@ function App() {
   const [isMean, setIsMean] = useState(null); // State to store whether the text is mean or not
   const [fileData, setFileData] = useState(""); // State to store file data
   const [sentenceResults, setSentenceResults] = useState([]); // State to store results for each sentence
-
+  const [type, setType] = useState("");
+  
   // Function to handle text submission
   const handleSubmit = async () => {
     try {
       // Send an API request with the inputText
-      const response = await fetch("https://a8k7ok1hmc.execute-api.ca-central-1.amazonaws.com/cyberbullyingpredict", {
+      const response = await fetch("http://0.0.0.0:8080/https://a8k7ok1hmc.execute-api.ca-central-1.amazonaws.com/cyberbullyingpredict", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -96,10 +97,12 @@ function App() {
       });
 
       if (response.ok) {
+	console.log("hey");      
         const data = await response.json();
-        console.log(data);
+          console.log(data);       
         // Check if the API response indicates the text is mean (true)
-        setIsMean(data.result  === "true");
+	      setIsMean(data.body.result === "true");
+        setType(data.body.type);
       } else {
         // Handle API error here
         console.error("API request failed");
@@ -127,7 +130,7 @@ function App() {
           const trimmedSentence = sentence.trim(); // Remove leading/trailing spaces
           if (trimmedSentence) {
             try {
-              const response = await fetch("https://a8k7ok1hmc.execute-api.ca-central-1.amazonaws.com/cyberbullyingpredict", {
+              const response = await fetch("http://0.0.0.0:8080/https://a8k7ok1hmc.execute-api.ca-central-1.amazonaws.com/cyberbullyingpredict", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -137,8 +140,8 @@ function App() {
 
               if (response.ok) {
                 const data = await response.json();
-                console.log(data);
-                results.push({ sentence: trimmedSentence, isMean: data.result === "true" });
+                setType(data.body.type);
+                results.push({ sentence: trimmedSentence, isMean: data.body.result === "true" });
               } else {
                 // Handle API error here
                 console.error("API request failed");
@@ -172,9 +175,9 @@ function App() {
           </button>
         </div>
         {isMean !== null && (
-          <p style={isMean ? styles.meanText : styles.notMeanText}>
+          <h1 style={isMean ? styles.meanText : styles.notMeanText}>
             {isMean ? "This text is mean." : "This text is not mean."}
-          </p>
+          </h1>
         )}
       </div>
       <div style={styles.card}>
@@ -199,7 +202,7 @@ function App() {
                   key={index}
                   style={result.isMean ? styles.meanText : styles.notMeanText}
                 >
-                  {result.sentence} - {result.isMean ? "Mean" : "Not Mean"}
+		       {result.sentence} - {result.isMean ? "Mean" : "Not Mean"}
                 </li>
               ))}
             </ul>
