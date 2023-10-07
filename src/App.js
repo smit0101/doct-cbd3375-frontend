@@ -92,6 +92,8 @@ function App() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Origin": "https://doct-cbd3375-frontend-qypza5jeea-uc.a.run.app/"
+
         },
         body: JSON.stringify({ text: inputText }),
       });
@@ -134,6 +136,7 @@ function App() {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
+                  "Origin": "https://doct-cbd3375-frontend-qypza5jeea-uc.a.run.app/"
                 },
                 body: JSON.stringify({ text: trimmedSentence }),
               });
