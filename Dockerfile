@@ -7,7 +7,7 @@ RUN git clone https://github.com/Rob--W/cors-anywhere.git
 
 RUN cd cors-anywhere && npm install
  
-RUN cd cors-anywhere && node server.js
+RUN cd cors-anywhere && nohup node server.js
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -22,7 +22,7 @@ RUN npm install
 COPY . .
 
 # Build your React app
-RUN nohup npm run build
+RUN npm run build
 
 # Expose the port your app will run on
 EXPOSE 3000
