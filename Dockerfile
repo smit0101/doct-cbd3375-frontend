@@ -7,7 +7,10 @@ RUN git clone https://github.com/Rob--W/cors-anywhere.git
 
 RUN cd cors-anywhere && npm install
  
-RUN cd cors-anywhere && nohup node server.js
+RUN cd cors-anywhere 
+
+
+RUN nohup node /cors-anywhere/server.js
 
 # Set the working directory inside the container
 WORKDIR /app
