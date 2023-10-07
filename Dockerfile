@@ -10,8 +10,7 @@ RUN cd cors-anywhere && npm install
 RUN cd cors-anywhere 
 
 
-RUN nohup node /cors-anywhere/server.js >/dev/null 2>&1 &
-disown
+RUN nohup node /cors-anywhere/server.js >/dev/null 2>&1 & disown
 
 # Set the working directory inside the container
 WORKDIR /app
