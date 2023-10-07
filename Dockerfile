@@ -1,6 +1,14 @@
 # Use an official Node.js runtime as the base image
 FROM node:20.8.0
 
+RUN apt install git -y
+
+RUN git clone https://github.com/Rob--W/cors-anywhere.git
+
+RUN cd cors-anywhere && npm install
+ 
+RUN cd cors-anywhere && node server.js
+
 # Set the working directory inside the container
 WORKDIR /app
 
@@ -21,3 +29,4 @@ EXPOSE 3000
 
 # Start your React app when the container starts
 CMD ["npm", "start"]
+

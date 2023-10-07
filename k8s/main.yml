@@ -1,0 +1,31 @@
+---
+apiVersion: "v1"
+kind: "Namespace"
+metadata:
+  name: "smitbackendapi"
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "smitbackend"
+  namespace: "smitbackendapi"
+  labels:
+    app: "smitbackend"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "smitbackend"
+  template:
+    metadata:
+      labels:
+        app: "smitbackend"
+    spec:
+      containers:
+      - name: "smitbackend-1"
+        image: "gcr.io/smitbackend/smitbackend:latest"
+        ports:
+          - containerPort: 3000
+    
+
+
