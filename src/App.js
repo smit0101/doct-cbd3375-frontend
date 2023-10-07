@@ -97,9 +97,9 @@ function App() {
       });
 
       if (response.ok) {
-	console.log("hey");      
+	      console.log("hey");      
         const data = await response.json();
-          console.log(data);       
+          console.log(data.body);       
         // Check if the API response indicates the text is mean (true)
 	      setIsMean(data.body.result === "true");
         setType(data.body.type);
