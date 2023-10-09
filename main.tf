@@ -19,8 +19,8 @@ provider "google" {
   region      = var.region
 }
 
-resource "google_container_cluster" "my_cluster" {
-  name               = "cluster-frontend"
+resource "google_container_cluster" "frontend_cluster" {
+  name               = "cluster-for-frontend"
   location           = var.region
   remove_default_node_pool = true
   initial_node_count = 1
@@ -30,10 +30,10 @@ resource "google_container_cluster" "my_cluster" {
 
 
 
-resource "google_container_node_pool" "default" {
-  name       = "frontend-pool"
+resource "google_container_node_pool" "nodepool1" {
+  name       = "frontend-pool-1"
   location   = var.region
-  cluster    = google_container_cluster.my_cluster.name
+  cluster    = google_container_cluster.frontend_cluster.name
   node_count = 1
 
   node_config {
@@ -42,10 +42,10 @@ resource "google_container_node_pool" "default" {
   }
 }
 
-resource "google_container_node_pool" "nodes" {
-  name       = "frontend-pool"
+resource "google_container_node_pool" "nodepool2" {
+  name       = "frontend-pool-2"
   location   = var.region
-  cluster    = google_container_cluster.my_cluster.name
+  cluster    = google_container_cluster.frontend_cluster.name
   node_count = 1
 
   node_config {
