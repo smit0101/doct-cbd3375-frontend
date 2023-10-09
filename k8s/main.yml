@@ -2,28 +2,28 @@
 apiVersion: "v1"
 kind: "Namespace"
 metadata:
-  name: "smitbackendapi"
+  name: "frontenddev"
 ---
 apiVersion: "apps/v1"
 kind: "Deployment"
 metadata:
-  name: "smitbackend"
-  namespace: "smitbackendapi"
+  name: "frontend"
+  namespace: "frontenddev"
   labels:
-    app: "smitbackend"
+    app: "frontend"
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: "smitbackend"
+      app: "frontend"
   template:
     metadata:
       labels:
-        app: "smitbackend"
+        app: "frontend"
     spec:
       containers:
-      - name: "smitbackend-1"
-        image: "gcr.io/smitbackend/smitbackend:latest"
+      - name: "frontend-1"
+        image: "gcr.io/smitbackend/doct-cbd3375-frontend:latest"
         ports:
           - containerPort: 3000
     
