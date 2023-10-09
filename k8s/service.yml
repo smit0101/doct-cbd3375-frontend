@@ -1,15 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: smitbackend-service
-  namespace: smitbackendapi
+  name: frontend-service
+  namespace: frontenddev
   labels:
-    app: smitbackend
+    app: frontend
 spec:
   selector:
-    app: smitbackend
+    app: frontend
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 8080
+      targetPort: 3000
   type: LoadBalancer
