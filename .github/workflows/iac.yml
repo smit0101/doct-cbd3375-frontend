@@ -1,0 +1,75 @@
+name: Docker Build and Run
+
+on:
+  push:
+    branches:
+      - master # Change this to your main branch name
+ 
+
+env:
+  DOCKER_USER: '${{secrets.DOCKER_USERNAME}}'
+  DOCKER_PASSWORD: '${{secrets.DOCKER_PASSWORD}}'
+  GCP_SA_KEY: '${{secrets.SERVICE_ACCOUNT_KEY}}'
+  GCP_PROJECT_ID: '${{secrets.GCP_PROJECT_ID}}'
+  SA: '${{secrets.SA}}'
+
+jobs:
+  IOC:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+      
+      - name: Install gke-gcloud-auth-plugin
+        run: |
+          gcloud --version
+          gcloud components install gke-gcloud-auth-plugin
+
+
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          credentials_json: '${{ secrets.SERVICE_ACCOUNT_KEY }}'
+
+
+      - name: Authenticate with Service Account Key
+        run: |
+          echo "$GCP_SA_KEY" > service-account-key.json
+          gcloud auth activate-service-account --key-file=service-account-key.json
+
+      - name: Set Active Account
+        run: gcloud config set account $SA
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.7
+        env:
+          GOOGLE_CREDENTIALS: $GCP_SA_KEY
+
+      - name: Initialize Terraform
+        run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan -var 'gcp_sa_key=$GCP_SA_KEY'
+        env:
+          GCP_SA_KEY: $GCP_SA_KEY
+
+      - name: Apply Terraform Changes
+        run: terraform apply -var 'gcp_sa_key=$GCP_SA_KEY' -auto-approve
+        env:
+          GCP_SA_KEY: $GCP_SA_KEY
+
+     
+          
