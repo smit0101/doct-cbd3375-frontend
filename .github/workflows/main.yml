@@ -3,7 +3,7 @@ name: Docker Build and Run
 on:
   push:
     branches:
-      - main # Change this to your main branch name
+      - master # Change this to your main branch name
  
 
 env:
