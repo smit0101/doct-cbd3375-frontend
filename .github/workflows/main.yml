@@ -129,7 +129,7 @@ jobs:
 
       - name: Deploy to GKE
         run: |
-            gcloud container clusters get-credentials my-gke-cluster --region us-central1-a
+            gcloud container clusters get-credentials cluster-for-frontend --region us-central1-a
             kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
           
             kubectl apply -f k8s/main.yml
