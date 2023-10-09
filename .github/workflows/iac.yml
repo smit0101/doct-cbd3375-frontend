@@ -1,9 +1,9 @@
-name: Docker Build and Run
+name: Infra provision 
 
 on:
   push:
     branches:
-      - main # Change this to your main branch name
+      - master # Change this to your main branch name
  
 
 env:
