@@ -85,13 +85,6 @@ jobs:
       - name: Push Image
         run: docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/doct-cbd3375-frontend:latest
 
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: 1.0.3
-        env:
-          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
-
       - name: Deploy to GKE
         run: |
             gcloud container clusters get-credentials cluster-for-frontend --region us-central1-a
