@@ -3,7 +3,7 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - main # Change this to your main branch name
+      - master # Change this to your main branch name
  
 
 env:
@@ -101,5 +101,7 @@ jobs:
             
       - name: Deploy Helm Chart
         run: |
-          helm upgrade --install frontendapp ./helm --namespace frontenddev
+          ls -a
+          helm list
+          helm install frontendapp ./helm --namespace frontenddev
  
