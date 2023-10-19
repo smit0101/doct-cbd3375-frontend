@@ -103,5 +103,6 @@ jobs:
         run: |
           ls -a
           helm list
+          kubectl create namespace frontenddev
           helm install frontendapp ./helm --namespace frontenddev
  
