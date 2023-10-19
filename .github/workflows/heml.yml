@@ -87,19 +87,19 @@ jobs:
 
       - name: Setup Helm
         run: |
-            curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-            chmod 700 get_helm.sh
-            ./get_helm.sh
-       env:
+          curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+          chmod 700 get_helm.sh
+          ./get_helm.sh
+        env:
           GOOGLE_APPLICATION_CREDENTIALS: $GCP_SA_KEY
 
 
       - name: Deploy to GKE
         run: |
-            gcloud container clusters get-credentials cluster-for-frontend --region us-central1-a
-            kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+          gcloud container clusters get-credentials cluster-for-frontend --region us-central1-a
+          kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
             
-     - name: Deploy Helm Chart
-       run: |
-            helm upgrade --install frontendapp ./helm --namespace frontenddev
+      - name: Deploy Helm Chart
+        run: |
+          helm upgrade --install frontendapp ./helm --namespace frontenddev
  
