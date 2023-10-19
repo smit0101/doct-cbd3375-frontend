@@ -1,0 +1,8 @@
+replicaCount: 3
+image:
+  repository: gcr.io/smitbackend/doct-cbd3375-frontend
+  tag: latest
+service:
+  port: 80
+  type: LoadBalancer
+

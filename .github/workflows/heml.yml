@@ -1,0 +1,105 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - master # Change this to your main branch name
+ 
+
+env:
+  DOCKER_USER: '${{secrets.DOCKER_USERNAME}}'
+  DOCKER_PASSWORD: '${{secrets.DOCKER_PASSWORD}}'
+  GCP_SA_KEY: '${{secrets.SERVICE_ACCOUNT_KEY}}'
+  GCP_PROJECT_ID: '${{secrets.GCP_PROJECT_ID}}'
+  SA: '${{secrets.SA}}'
+
+jobs:
+  IOC:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+      
+      - name: Install gke-gcloud-auth-plugin
+        run: |
+          gcloud --version
+          gcloud components install gke-gcloud-auth-plugin
+
+
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          credentials_json: '${{ secrets.SERVICE_ACCOUNT_KEY }}'
+
+
+      - name: Authenticate with Service Account Key
+        run: |
+          echo "$GCP_SA_KEY" > service-account-key.json
+          gcloud auth activate-service-account --key-file=service-account-key.json
+
+      - name: Set Active Account
+        run: gcloud config set account $SA
+
+      - name: Configure Docker
+        run: gcloud auth configure-docker
+
+
+
+      - name: Build Docker Image
+        run: |
+          docker build -t doct-cbd3375-frontend:latest .
+          docker tag doct-cbd3375-frontend:latest gcr.io/${{ secrets.GCP_PROJECT_ID }}/doct-cbd3375-frontend:latest
+
+
+
+      - name: Debug Service Account Key
+        run: |
+          echo "$SERVICE_ACCOUNT_KEY" > service-account-key.json
+          cat service-account-key.json
+
+
+
+      - name: Debug Google Cloud Authentication
+        run: gcloud auth list
+
+
+      - name: List GCR Images
+        run: |
+          gcloud container images list
+
+      - name: Get Value account
+        run: gcloud config get-value account
+
+
+      - name: Push Image
+        run: docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/doct-cbd3375-frontend:latest
+
+      - name: Setup Helm
+        run: |
+            curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+            chmod 700 get_helm.sh
+            ./get_helm.sh
+       env:
+          GOOGLE_APPLICATION_CREDENTIALS: $GCP_SA_KEY
+
+
+      - name: Deploy to GKE
+        run: |
+            gcloud container clusters get-credentials cluster-for-frontend --region us-central1-a
+            kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+            
+     - name: Deploy Helm Chart
+       run: |
+            helm upgrade --install frontendapp ./helm --namespace frontenddev
+ 
