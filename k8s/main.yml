@@ -26,6 +26,18 @@ spec:
         image: "gcr.io/smitbackend/doct-cbd3375-frontend:latest"
         ports:
           - containerPort: 3000
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 15
     
 
 
