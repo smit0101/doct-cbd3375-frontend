@@ -58,7 +58,7 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t doct-cbd3375-frontend:latest .
+          docker build --build-arg BACKEND_URL="'${{secrets.BACKEND_URL}}'" -t doct-cbd3375-frontend:latest .
           docker tag doct-cbd3375-frontend:latest gcr.io/${{ secrets.GCP_PROJECT_ID }}/doct-cbd3375-frontend:latest
 
 
