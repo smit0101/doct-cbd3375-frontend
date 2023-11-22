@@ -83,6 +83,7 @@ function App() {
   const [fileData, setFileData] = useState(""); // State to store file data
   const [sentenceResults, setSentenceResults] = useState([]); // State to store results for each sentence
   const [type, setType] = useState("");
+  const [dataObject, setDataObject] = useState(null);
   
   // Function to handle text submission
   const handleSubmit = async () => {
@@ -103,6 +104,7 @@ function App() {
         const data = await response.json();
           console.log(data.body);       
         // Check if the API response indicates the text is mean (true)
+	      setDataObject(data);
 	      setIsMean(data.body.result === "true");
         setType(data.body.type);
       } else {
@@ -178,11 +180,15 @@ function App() {
           </button>
         </div>
         {isMean !== null && (
+         <div>		
           <h1 style={isMean ? styles.meanText : styles.notMeanText}>
             {isMean ? "This text is mean." : "This text is not mean."}
           </h1>
+{dataObject && ( <div> <h2> Data Object: </h2> <pre> {JSON.stringify(dataObject, null, 2)} </pre> </div>
         )}
       </div>
+	      )}
+</div>
       <div style={styles.card}>
         <div style={styles.inputContainer}>
           <label htmlFor="fileInput" style={styles.fileInputLabel}>
