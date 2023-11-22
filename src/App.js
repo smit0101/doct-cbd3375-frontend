@@ -88,7 +88,7 @@ function App() {
   const handleSubmit = async () => {
     try {
       // Send an API request with the inputText
-      const response = await fetch("https://cors-qypza5jeea-uc.a.run.app/https://zfym8wiu6d.execute-api.ca-central-1.amazonaws.com", {
+      const response = await fetch("https://cors-qypza5jeea-uc.a.run.app/https://zfym8wiu6d.execute-api.ca-central-1.amazonaws.com/cyberbullyingpredict", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -132,7 +132,7 @@ function App() {
           const trimmedSentence = sentence.trim(); // Remove leading/trailing spaces
           if (trimmedSentence) {
             try {
-              const response = await fetch("https://cors-qypza5jeea-uc.a.run.app/https://zfym8wiu6d.execute-api.ca-central-1.amazonaws.com", {
+              const response = await fetch("https://cors-qypza5jeea-uc.a.run.app/https://zfym8wiu6d.execute-api.ca-central-1.amazonaws.com/cyberbullyingpredict", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
