@@ -77,6 +77,8 @@ const styles = {
   },
 };
 
+const backend_url = process.env.BACKEND_URL || "http://127.0.0.1:8080/cyberbullyingpredict"
+
 function App() {
   const [inputText, setInputText] = useState(""); // State to store input text
   const [isMean, setIsMean] = useState(null); // State to store whether the text is mean or not
