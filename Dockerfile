@@ -4,6 +4,8 @@ FROM node:20.8.0
 # Set the working directory inside the container
 WORKDIR /app
 
+ENV BACKEND_URL="http://127.0.0.1:8080/cyberbullyingpredict"
+
 # Copy package.json and package-lock.json to the container
 COPY package*.json ./
 
