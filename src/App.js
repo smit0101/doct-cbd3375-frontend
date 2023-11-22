@@ -91,6 +91,7 @@ function App() {
   const handleSubmit = async () => {
     try {
       // Send an API request with the inputText
+      console.log(backend_url);
       const response = await fetch("https://cors-qypza5jeea-uc.a.run.app/${backend_url}", {
         method: "POST",
         headers: {
