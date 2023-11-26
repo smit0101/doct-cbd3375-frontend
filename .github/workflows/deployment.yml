@@ -60,6 +60,8 @@ jobs:
         run: |
           docker build --build-arg BACKEND_URL=${{secrets.BACKEND_URL}} -t doct-cbd3375-frontend:latest .
           docker tag doct-cbd3375-frontend:latest gcr.io/${{ secrets.GCP_PROJECT_ID }}/doct-cbd3375-frontend:latest
+          docker tag doct-cbd3375-frontend:latest smitmark01/doct-cbd3375-frontend:latest
+          
 
 
 
@@ -83,7 +85,10 @@ jobs:
 
 
       - name: Push Image
-        run: docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/doct-cbd3375-frontend:latest
+        run: |
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/doct-cbd3375-frontend:latest
+          docker push smitmark01/doct-cbd3375-frontend:tagname
+             
 
       - name: Deploy to GKE
         run: |
