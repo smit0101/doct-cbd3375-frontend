@@ -1,0 +1,9 @@
+---
+namespace: cyberbullying-namespace
+
+frontend:
+  image: smitmark01/doct-cbd3375-frontend
+  tag: v1.0
+  service:
+    type: LoadBalancer
+  backend: https://tn7ysl0ig5.execute-api.ca-central-1.amazonaws.com/cyberbullyingpredict 

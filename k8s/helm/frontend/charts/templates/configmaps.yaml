@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ml-config
+  namespace: {{ .Values.namespace }}
+data:
+  backend_url: {{ .Values.frontend.backend }}

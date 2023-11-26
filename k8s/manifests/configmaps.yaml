@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ml-config
+  namespace: cyberbullying-namespace
+data:
+  backend_url: https://5miqdqexwk.execute-api.ca-central-1.amazonaws.com/cyberbullyingpredict

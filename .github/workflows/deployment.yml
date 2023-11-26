@@ -3,7 +3,7 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - master # Change this to your main branch name
+      - 'edit/change-to-new-frontend' # Change this to your main branch name
  
 
 env:
@@ -55,11 +55,22 @@ jobs:
         run: gcloud auth configure-docker
 
 
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build Docker Image
-        run: |
-          docker build --build-arg BACKEND_URL=${{secrets.BACKEND_URL}} -t doct-cbd3375-frontend:latest .
-          docker tag doct-cbd3375-frontend:latest gcr.io/${{ secrets.GCP_PROJECT_ID }}/doct-cbd3375-frontend:latest
+
+      - id: buildimage
+        name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            smitmark01/doct-cbd3375-frontend:v1.0
 
 
 
@@ -74,21 +85,29 @@ jobs:
         run: gcloud auth list
 
 
-      - name: List GCR Images
+      - name: List Images
         run: |
-          gcloud container images list
+          docker images
 
       - name: Get Value account
         run: gcloud config get-value account
 
 
-      - name: Push Image
-        run: docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/doct-cbd3375-frontend:latest
+      - name: Setup Helm
+        run: |
+          curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+          chmod 700 get_helm.sh
+          ./get_helm.sh
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: $GCP_SA_KEY
+
 
       - name: Deploy to GKE
         run: |
             gcloud container clusters get-credentials cluster-for-frontend --region us-central1-a
             kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-            kubectl apply -f k8s/main.yml
-            kubectl apply -f k8s/service.yml
+            BACKEND_URL=$(cat backend)
+            helm upgrade -f ./k8s/helm/frontend/charts/values.yaml --set backend=$BACKEND_URL --install frontend-uat ./k8s/helm/frontend/charts/
+
+      
           

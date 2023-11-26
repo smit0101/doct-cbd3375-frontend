@@ -1,26 +1,16 @@
-# Use an official Node.js runtime as the base image
-FROM node:20.8.0
+FROM node:20.9.0-alpine3.17
 
-# Set the working directory inside the container
-WORKDIR /app
+ENV NPM_CONFIG_LOGLEVEL=info \
+    NODE_ENV=development \
+    BACKEND_URL=https://5miqdqexwk.execute-api.ca-central-1.amazonaws.com/cyberbullyingpredict \
+    PORT=8080
 
-ENV BACKEND_URL="http://127.0.0.1:8080/cyberbullyingpredict"
+COPY ["package.json", "package-lock.json*","./"]
 
-# Copy package.json and package-lock.json to the container
-COPY package*.json ./
-
-# Install dependencies
 RUN npm install
 
-# Copy all the source code to the container
-COPY . .
+COPY ./app .
 
-# Build your React app
-RUN npm run build
+EXPOSE 8080
 
-# Expose the port your app will run on
-EXPOSE 3000
-
-# Start your React app when the container starts
-CMD ["npm", "start"]
-
+ENTRYPOINT npm start
