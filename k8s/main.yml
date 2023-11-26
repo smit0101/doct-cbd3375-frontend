@@ -26,6 +26,9 @@ spec:
         image: "gcr.io/smitbackend/doct-cbd3375-frontend:latest"
         ports:
           - containerPort: 3000
+        env:
+          - name: BACKEND_URL
+            value: "https://tn7ysl0ig5.execute-api.ca-central-1.amazonaws.com/cyberbullyingpredict"
         readinessProbe:
           httpGet:
             path: /
