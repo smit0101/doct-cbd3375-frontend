@@ -131,4 +131,5 @@ jobs:
             kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
             BACKEND_URL=$(cat backend)
             helm upgrade -f ./k8s/helm/frontend/charts/values.yaml --set backend=$BACKEND_URL --install frontend-uat ./k8s/helm/frontend/charts/
+            kubectl config set-context --current --namespace=cyberbullying-namespace
             kubectl get ingress
