@@ -87,7 +87,7 @@ jobs:
       - name: Push Image
         run: |
           docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/doct-cbd3375-frontend:latest
-          docker push smitmark01/doct-cbd3375-frontend:tagname
+          docker push smitmark01/doct-cbd3375-frontend:latest
              
 
       - name: Deploy to GKE
