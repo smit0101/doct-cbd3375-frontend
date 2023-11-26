@@ -6,6 +6,9 @@ WORKDIR /app
 
 ENV BACKEND_URL="http://127.0.0.1:8080/cyberbullyingpredict"
 
+ENV BACKEND_URL=${BACKEND_URL}
+
+
 # Copy package.json and package-lock.json to the container
 COPY package*.json ./
 
