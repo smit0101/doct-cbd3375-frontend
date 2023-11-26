@@ -131,4 +131,4 @@ jobs:
             kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
             BACKEND_URL=$(cat backend)
             helm upgrade -f ./k8s/helm/frontend/charts/values.yaml --set backend=$BACKEND_URL --install frontend-uat ./k8s/helm/frontend/charts/
-            kubectl describe ing | grep Address | awk '{url="http://"$2":8080"; print url}'
+            kubectl get ingress
