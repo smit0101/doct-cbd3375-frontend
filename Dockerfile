@@ -25,5 +25,6 @@ RUN npm run build
 EXPOSE 3000
 
 # Start your React app when the container starts
-CMD ["npm", "start"]
+#CMD ["npm", "start"]
+CMD ["npm", "start", "--", "--env.BACKEND_URL=${BACKEND_URL}"]
 
