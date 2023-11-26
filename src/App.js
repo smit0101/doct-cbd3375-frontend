@@ -173,7 +173,7 @@ function App() {
         <div style={styles.inputContainer}>
           <input
             type="text"
-            placeholder="Enter text"
+            placeholder="Enter text here"
             style={styles.input}
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
