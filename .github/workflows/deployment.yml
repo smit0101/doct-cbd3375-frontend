@@ -134,4 +134,4 @@ jobs:
             kubectl config set-context --current --namespace=cyberbullying-namespace
             kubectl get ingress
             echo "Click the URL below to test"
-            kubectl describe ingress dictionary-ingress-resource | grep Address | awk '{url="http://"$2":8080"; print url}'
+            kubectl describe ingress frontend-ingress-resource | grep Address | awk '{url="http://"$2":8080"; print url}'
