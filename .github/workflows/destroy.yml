@@ -3,7 +3,7 @@ name: Infra destroy
 on:
   push:
     branches:
-      - master # Change this to your main branch name
+      - main # Change this to your main branch name
   workflow_run:
     workflows: ["Infra provision"]
     types:
