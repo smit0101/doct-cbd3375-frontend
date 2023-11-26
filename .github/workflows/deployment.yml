@@ -133,3 +133,5 @@ jobs:
             helm upgrade -f ./k8s/helm/frontend/charts/values.yaml --set backend=$BACKEND_URL --install frontend-uat ./k8s/helm/frontend/charts/
             kubectl config set-context --current --namespace=cyberbullying-namespace
             kubectl get ingress
+            echo "Click the URL below to test"
+            kubectl describe ingress dictionary-ingress-resource | grep Address | awk '{url="http://"$2":8080"; print url}'
