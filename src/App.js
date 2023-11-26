@@ -77,7 +77,7 @@ const styles = {
   },
 };
 
-const backend_url = process.env.BACKEND_URL || "http://127.0.0.1:8080/cyberbullyingpredict"
+const backend_url = process.env.REACT_APP_BACKEND_URL || "http://127.0.0.1:8080/cyberbullyingpredict"
 
 function App() {
   const [inputText, setInputText] = useState(""); // State to store input text
